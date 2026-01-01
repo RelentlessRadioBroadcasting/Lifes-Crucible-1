@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --color-background: hsl(0 0% 5%);
-  /* Almost black */
+  --color-background: hsl(0 0% 100%);
+  /* Pure White */
   --color-foreground: hsl(153, 26%, 33%);
   /* Terminal Green */
 
