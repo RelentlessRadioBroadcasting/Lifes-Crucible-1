@@ -1,5 +1,5 @@
 import { scores, type Score, type InsertScore } from "@shared/schema";
-import { db } from "./db";
+import { db } from "./db.ts";
 import { desc } from "drizzle-orm";
 
 export interface IStorage {

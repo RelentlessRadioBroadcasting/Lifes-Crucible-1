@@ -2,8 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
-import { Heart, Brain, Sparkles, Skull, DollarSign } from "lucide-react";
+import { Heart, Brain, Sparkles, Skull, DollarSign, Trophy } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { type Score, type InsertScore } from "@shared/schema";
+import { Input } from "@/components/ui/input";
 
 type GameState = "INTRO" | "START" | "PLAYING" | "GAME_OVER" | "VICTORY" | "RUSHED";
 
@@ -317,9 +321,51 @@ export default function Game() {
     }
   };
 
+  const queryClient = useQueryClient();
+  const [playerName, setPlayerName] = useState("");
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+
+  const { data: topScores, isLoading: scoresLoading } = useQuery<Score[]>({
+    queryKey: ["/api/scores"],
+  });
+
+  const submitScoreMutation = useMutation({
+    mutationFn: async (score: InsertScore) => {
+      await apiRequest("POST", "/api/scores", score);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/scores"] });
+      setShowLeaderboard(true);
+      toast({
+        title: "Score Saved",
+        description: "Your survival has been recorded.",
+      });
+    },
+  });
+
   const handleRestart = () => {
-    setButtonDisabled(false);
-    startGame();
+    setStats(INITIAL_STATS);
+    setGameState("START");
+    setTurn(1);
+    setClicks(0);
+    setMessage("");
+    setStatChanges(null);
+    setGameSituations([]);
+    setUsedSituations(new Set());
+    setPlayerName("");
+    setShowLeaderboard(false);
+  };
+
+  const submitScore = () => {
+    if (!playerName.trim()) return;
+    submitScoreMutation.mutate({
+      playerName: playerName.trim(),
+      roundsSurvived: turn - 1,
+      health: stats.health,
+      sanity: stats.sanity,
+      hope: stats.hope,
+      financial: stats.financial,
+    });
   };
 
   const formatStatChange = () => {
@@ -429,27 +475,35 @@ export default function Game() {
               <Skull className="w-16 h-16 mx-auto text-red-500 animate-pulse" />
               <div className="text-red-500 font-bold text-2xl">SIMULATION FAILED</div>
               <p className="text-muted-foreground">{message}</p>
-              <Button 
-                onClick={handleRestart}
-                variant="destructive"
-                className="rounded-none px-8"
-              >
-                REBOOT SYSTEM
-              </Button>
-            </div>
-          )}
-
-          {gameState === "RUSHED" && (
-            <div className="space-y-4">
-              <Skull className="w-16 h-16 mx-auto text-yellow-500 animate-pulse" />
-              <div className="text-yellow-500 font-bold text-2xl">LIFE SKIPPED</div>
-              <p className="text-muted-foreground">{message}</p>
-              <Button 
-                onClick={handleRestart}
-                className="bg-red-600 text-black hover:bg-red-500 rounded-none px-8 font-bold"
-              >
-                Don't Rush Through Life
-              </Button>
+              
+              {!showLeaderboard ? (
+                <div className="space-y-2 p-4 border border-muted bg-muted/5">
+                  <p className="text-xs uppercase">Record your failure?</p>
+                  <Input 
+                    placeholder="ENTER NAME" 
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value.toUpperCase())}
+                    className="bg-black border-muted text-foreground rounded-none text-center h-10"
+                    maxLength={15}
+                  />
+                  <Button 
+                    onClick={submitScore}
+                    disabled={!playerName.trim() || submitScoreMutation.isPending}
+                    className="w-full bg-foreground text-black hover:bg-foreground/90 rounded-none font-bold"
+                  >
+                    SUBMIT TO LOGS
+                  </Button>
+                  <Button 
+                    onClick={handleRestart}
+                    variant="ghost"
+                    className="w-full text-muted-foreground hover:text-foreground rounded-none text-xs"
+                  >
+                    SKIP AND REBOOT
+                  </Button>
+                </div>
+              ) : (
+                <Leaderboard scores={topScores} loading={scoresLoading} onRestart={handleRestart} />
+              )}
             </div>
           )}
 
@@ -458,12 +512,35 @@ export default function Game() {
               <Sparkles className="w-16 h-16 mx-auto text-yellow-500 animate-spin" />
               <div className="text-yellow-500 font-bold text-2xl">SURVIVAL COMPLETE</div>
               <p className="text-muted-foreground">{message}</p>
-              <Button 
-                onClick={handleRestart}
-                className="bg-yellow-500 text-black hover:bg-yellow-400 rounded-none px-8"
-              >
-                PLAY AGAIN
-              </Button>
+
+              {!showLeaderboard ? (
+                <div className="space-y-2 p-4 border border-muted bg-muted/5">
+                  <p className="text-xs uppercase">Record your survival?</p>
+                  <Input 
+                    placeholder="ENTER NAME" 
+                    value={playerName}
+                    onChange={(e) => setPlayerName(e.target.value.toUpperCase())}
+                    className="bg-black border-muted text-foreground rounded-none text-center h-10"
+                    maxLength={15}
+                  />
+                  <Button 
+                    onClick={submitScore}
+                    disabled={!playerName.trim() || submitScoreMutation.isPending}
+                    className="w-full bg-yellow-500 text-black hover:bg-yellow-400 rounded-none font-bold"
+                  >
+                    SUBMIT TO ARCHIVES
+                  </Button>
+                  <Button 
+                    onClick={handleRestart}
+                    variant="ghost"
+                    className="w-full text-muted-foreground hover:text-foreground rounded-none text-xs"
+                  >
+                    SKIP AND REPLAY
+                  </Button>
+                </div>
+              ) : (
+                <Leaderboard scores={topScores} loading={scoresLoading} onRestart={handleRestart} />
+              )}
             </div>
           )}
         </div>
@@ -488,6 +565,45 @@ function StatDisplay({ icon: Icon, label, value }: { icon: any, label: string, v
         </div>
         <Progress value={value} className="h-1.5 bg-muted" indicatorClassName={value < 20 ? "bg-red-500" : "bg-foreground"} />
       </div>
+    </div>
+  );
+}
+
+function Leaderboard({ scores, loading, onRestart }: { scores?: Score[], loading: boolean, onRestart: () => void }) {
+  return (
+    <div className="space-y-4 w-full">
+      <div className="flex items-center justify-center gap-2 text-primary">
+        <Trophy className="w-5 h-5" />
+        <h3 className="text-sm">HALL OF SURVIVORS</h3>
+      </div>
+      
+      <div className="border border-muted bg-black/40 p-2 text-[10px] space-y-1 min-h-[150px]">
+        {loading ? (
+          <div className="text-center py-10 animate-pulse">CONNECTING TO ARCHIVES...</div>
+        ) : scores?.length ? (
+          <div className="space-y-1">
+            <div className="flex justify-between border-b border-muted/30 pb-1 text-muted-foreground px-1">
+              <span>PLAYER</span>
+              <span>ROUNDS</span>
+            </div>
+            {scores.map((s, i) => (
+              <div key={s.id} className="flex justify-between items-center px-1 py-0.5 border-b border-muted/10 last:border-0">
+                <span className="truncate max-w-[120px]">{i + 1}. {s.playerName}</span>
+                <span className="font-mono">{s.roundsSurvived}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-10">THE ARCHIVES ARE EMPTY</div>
+        )}
+      </div>
+
+      <Button 
+        onClick={onRestart}
+        className="w-full bg-primary text-black hover:bg-primary/90 rounded-none font-bold"
+      >
+        REBOOT SYSTEM
+      </Button>
     </div>
   );
 }
