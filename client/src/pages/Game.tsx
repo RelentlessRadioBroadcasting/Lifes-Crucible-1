@@ -351,7 +351,6 @@ export default function Game() {
     setMessage("");
     setStatChanges(null);
     setGameSituations([]);
-    setUsedSituations(new Set());
     setPlayerName("");
     setShowLeaderboard(false);
   };
