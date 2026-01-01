@@ -345,7 +345,7 @@ export default function Game() {
         {/* INTRO SCREEN */}
         {gameState === "INTRO" && (
           <div className="min-h-[400px] flex flex-col items-center justify-center space-y-4">
-            <div className="w-full border-4 border-foreground bg-white p-4 relative overflow-hidden min-h-[150px] flex items-center justify-center">
+            <div className="w-full border-4 border-foreground bg-black p-4 relative overflow-hidden min-h-[150px] flex items-center justify-center">
               <div className="scrolling-text text-white font-vt text-sm leading-relaxed text-center whitespace-normal">
                 WARNING
                 <br /><br />
