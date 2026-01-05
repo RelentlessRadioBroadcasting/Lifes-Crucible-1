@@ -357,9 +357,10 @@ export default function Game() {
 
   const submitScore = () => {
     if (!playerName.trim()) return;
+    const completedRounds = gameState === "VICTORY" ? MAX_TURNS : Math.max(0, turn - 1);
     submitScoreMutation.mutate({
       playerName: playerName.trim(),
-      roundsSurvived: turn - 1,
+      roundsSurvived: completedRounds,
       health: stats.health,
       sanity: stats.sanity,
       hope: stats.hope,
@@ -503,6 +504,20 @@ export default function Game() {
               ) : (
                 <Leaderboard scores={topScores} loading={scoresLoading} onRestart={handleRestart} />
               )}
+            </div>
+          )}
+
+          {gameState === "RUSHED" && (
+            <div className="space-y-4">
+              <Skull className="w-16 h-16 mx-auto text-yellow-500 animate-pulse" />
+              <div className="text-yellow-500 font-bold text-2xl">LIFE SKIPPED</div>
+              <p className="text-muted-foreground">{message}</p>
+              <Button 
+                onClick={handleRestart}
+                className="bg-red-600 text-black hover:bg-red-500 rounded-none px-8 font-bold"
+              >
+                Don't Rush Through Life
+              </Button>
             </div>
           )}
 
