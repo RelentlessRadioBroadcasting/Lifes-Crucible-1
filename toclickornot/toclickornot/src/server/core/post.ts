@@ -16,7 +16,6 @@ export const createPost = async () => {
       backgroundUri: '/splash-background.png',
       buttonLabel: 'Begin Journey',
       description: `${date}'s game`,
-      entryUri: 'splash.html',
       heading: 'Welcome to the Game!',
       appIconUri: 'default-icon.png',
     }

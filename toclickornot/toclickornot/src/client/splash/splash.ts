@@ -1,10 +1,5 @@
 import { navigateTo, context, requestExpandedMode } from "@devvit/web/client";
 
-// Set background image
-document.body.style.backgroundImage = "url('/background.png')";
-document.body.style.backgroundSize = "cover";
-document.body.style.backgroundPosition = "center";
-
 const docsLink = document.getElementById("docs-link") as HTMLDivElement;
 const playtestLink = document.getElementById("playtest-link") as HTMLDivElement;
 const discordLink = document.getElementById("discord-link") as HTMLDivElement;
@@ -31,7 +26,8 @@ discordLink.addEventListener("click", () => {
 const titleElement = document.getElementById("title") as HTMLHeadingElement;
 
 function init() {
-  titleElement.textContent = `Hey ${context.username ?? "user"} 👋`;
+  const username = context.username ?? "SNOO";
+  titleElement.textContent = `WELCOME, ${username.toUpperCase()}`;
 }
 
 init();

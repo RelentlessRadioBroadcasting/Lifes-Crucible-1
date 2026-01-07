@@ -2,9 +2,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  color: #000000;
+  font-family: 'VT323', monospace;
+  color: #00ff00;
 }
 
 .app {
@@ -16,13 +15,14 @@
   height: 100vh;
   margin: 0;
   gap: 16px;
+  background-color: #000;
+  background-image: url('/splash-background.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .snoo {
-  object-fit: contain;
-  width: 50%;
-  max-width: 250px;
-  margin: 0 auto;
+  display: none;
 }
 
 .content {
@@ -30,40 +30,49 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border: 2px solid #00ff00;
 }
 
 .title {
+  font-family: 'Press Start 2P', cursive;
   font-size: 1.5em;
   font-weight: bold;
   text-align: center;
+  color: #00ff00;
 }
 
 .description {
-  font-size: 1em;
+  font-size: 1.2em;
   text-align: center;
-  color: #5c6c74;
+  color: #00ff00;
 }
 
 .code {
-  background-color: #e5ebee;
-  padding: 2px 4px;
-  border-radius: 4px;
+  display: none;
 }
 
 .start-button {
-  background-color: #d93900;
-  color: #ffffff;
+  background-color: transparent;
+  color: #00ff00;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
-  border: none;
-  padding: 6px 16px;
-  height: 28px;
-  font-size: 1.1em;
-  border-radius: 12px;
+  border: 2px solid #00ff00;
+  padding: 12px 24px;
+  height: auto;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 1em;
+  border-radius: 0;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.start-button:hover {
+  background-color: #00ff00;
+  color: #000;
 }
 
 .footer {
@@ -73,8 +82,10 @@
   transform: translateX(-50%);
   display: flex;
   gap: 12px;
-  font-size: 0.8em;
-  color: #666666;
+  font-size: 1em;
+  color: #00ff00;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 4px 8px;
 }
 
 .docs-link {
@@ -82,5 +93,5 @@
 }
 
 .divider {
-  color: rgba(0, 0, 0, 0.1);
+  color: #00ff00;
 }
