@@ -7,28 +7,75 @@
       name="viewport"
       content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, height=device-height, user-scalable=0"
     />
-    <title>devvit</title>
+    <title>TO CLICK OR NOT</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   </head>
   <body class="app">
-    <img class="snoo" src="/snoo.png" alt="Snoo" />
-    <div class="content">
-      <h1 class="title" id="title"></h1>
-      <p class="description">
-        Edit <span class="code">src/client/game/game.ts</span> to get started.
-      </p>
+    <div class="game-container">
+      <header class="header">
+        <h1 class="title">TO CLICK OR NOT</h1>
+        <div class="turn-display" id="turn-display">ROUND 1/10</div>
+      </header>
+
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-bar">
+          <span class="stat-label">HEALTH</span>
+          <div class="bar-container">
+            <div class="bar-fill" id="health-bar" style="width: 50%"></div>
+          </div>
+          <span class="stat-value" id="health-value">50</span>
+        </div>
+        <div class="stat-bar">
+          <span class="stat-label">SANITY</span>
+          <div class="bar-container">
+            <div class="bar-fill" id="sanity-bar" style="width: 50%"></div>
+          </div>
+          <span class="stat-value" id="sanity-value">50</span>
+        </div>
+        <div class="stat-bar">
+          <span class="stat-label">HOPE</span>
+          <div class="bar-container">
+            <div class="bar-fill" id="hope-bar" style="width: 50%"></div>
+          </div>
+          <span class="stat-value" id="hope-value">50</span>
+        </div>
+        <div class="stat-bar">
+          <span class="stat-label">FINANCIAL</span>
+          <div class="bar-container">
+            <div class="bar-fill" id="financial-bar" style="width: 50%"></div>
+          </div>
+          <span class="stat-value" id="financial-value">50</span>
+        </div>
+      </div>
+
+      <div class="message-box" id="message-box">
+        <p id="situation-text">Loading...</p>
+      </div>
+
+      <div class="click-progress" id="click-progress">
+        <span>CLICKS: </span>
+        <span id="click-count">0</span>
+        <span>/</span>
+        <span id="clicks-needed">5</span>
+      </div>
+
+      <button class="survive-button" id="survive-button">
+        CLICK TO SURVIVE
+      </button>
+
+      <div class="game-over-screen hidden" id="game-over-screen">
+        <div class="game-over-icon" id="game-over-icon">💀</div>
+        <h2 class="game-over-title" id="game-over-title">SIMULATION FAILED</h2>
+        <p class="game-over-message" id="game-over-message"></p>
+        <button class="restart-button" id="restart-button">REBOOT LIFE.EXE</button>
+      </div>
+
+      <footer class="footer">
+        <span id="username">anonymous</span>
+        <span class="divider">|</span>
+        <span>Plays: <span id="total-plays">0</span></span>
+      </footer>
     </div>
-    <div class="counter-row">
-      <button class="counter-button" id="decrement-button">-</button>
-      <span class="counter-value" id="counter-value">0</span>
-      <button class="counter-button" id="increment-button">+</button>
-    </div>
-    <footer class="footer">
-      <div class="docs-link" tabindex="0" id="docs-link">Docs</div>
-      <span class="divider">|</span>
-      <div class="docs-link" tabindex="0" id="playtest-link">r/Devvit</div>
-      <span class="divider">|</span>
-      <div class="docs-link" tabindex="0" id="discord-link">Discord</div>
-    </footer>
     <script type="module" src="game/game.ts" defer></script>
   </body>
 </html>

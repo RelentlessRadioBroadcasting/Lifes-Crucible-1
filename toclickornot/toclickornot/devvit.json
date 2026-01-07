@@ -23,8 +23,8 @@
   "menu": {
     "items": [
       {
-        "label": "Create a new post",
-        "description": "toclickornot",
+        "label": "Create To Click or Not game",
+        "description": "Create a survival clicker game post",
         "location": "subreddit",
         "forUserType": "moderator",
         "endpoint": "/internal/menu/post-create"

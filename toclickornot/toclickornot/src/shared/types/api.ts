@@ -1,18 +1,64 @@
+export type Stats = {
+  health: number;
+  sanity: number;
+  hope: number;
+  financial: number;
+};
+
+export type GameState = "PLAYING" | "GAME_OVER" | "VICTORY" | "RUSHED";
+
+export type Situation = {
+  message: string;
+  effects: Partial<Stats>;
+};
+
 export type InitResponse = {
   type: "init";
   postId: string;
-  count: number;
   username: string;
+  gameState: GameState;
+  turn: number;
+  stats: Stats;
+  situation: Situation | null;
+  highScore: number;
+  totalPlays: number;
 };
 
-export type IncrementResponse = {
-  type: "increment";
+export type ClickResponse = {
+  type: "click";
   postId: string;
-  count: number;
+  clicks: number;
+  clicksNeeded: number;
+  turnComplete: boolean;
+  newTurn?: number;
+  newSituation?: Situation;
+  newStats?: Stats;
+  gameState?: GameState;
+  message?: string;
 };
 
-export type DecrementResponse = {
-  type: "decrement";
+export type RestartResponse = {
+  type: "restart";
   postId: string;
-  count: number;
+  turn: number;
+  stats: Stats;
+  situation: Situation;
+  gameState: GameState;
+};
+
+export type LeaderboardEntry = {
+  username: string;
+  roundsSurvived: number;
+  timestamp: number;
+};
+
+export type LeaderboardResponse = {
+  type: "leaderboard";
+  entries: LeaderboardEntry[];
+};
+
+export type SubmitScoreResponse = {
+  type: "submit";
+  success: boolean;
+  rank?: number;
 };
