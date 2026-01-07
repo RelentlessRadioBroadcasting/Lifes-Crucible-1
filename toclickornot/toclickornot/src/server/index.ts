@@ -25,6 +25,7 @@ import {
   applyEffects,
   checkGameOver,
   getVictoryMessage,
+  getRandomRoundEvent,
 } from "./core/game";
 
 const app = express();
@@ -204,7 +205,7 @@ router.post<
       return;
     }
 
-    // Generate new situation
+    // Generate new situation and round event
     const newSituation = getRandomSituation();
     await redis.set(userKey(postId, username, "situation"), JSON.stringify(newSituation));
 
@@ -218,6 +219,7 @@ router.post<
       newSituation,
       newStats: stats,
       gameState: "PLAYING",
+      roundEvent: getRandomRoundEvent(),
     });
   } catch (error) {
     console.error(`Click Error:`, error);

@@ -20,6 +20,7 @@ const restartButton = document.getElementById("restart-button") as HTMLButtonEle
 const usernameDisplay = document.getElementById("username") as HTMLSpanElement;
 const totalPlaysDisplay = document.getElementById("total-plays") as HTMLSpanElement;
 const statChangeDisplay = document.getElementById("stat-change-display") as HTMLDivElement;
+const roundEventDisplay = document.getElementById("round-event") as HTMLDivElement;
 
 const healthBar = document.getElementById("health-bar") as HTMLDivElement;
 const sanityBar = document.getElementById("sanity-bar") as HTMLDivElement;
@@ -172,6 +173,15 @@ async function handleClick() {
       if (data.newStats) updateStats(data.newStats);
       if (data.newTurn) updateTurn(data.newTurn);
       if (data.newSituation) updateSituation(data.newSituation);
+      
+      // Show round event if available
+      if (data.roundEvent && roundEventDisplay) {
+        roundEventDisplay.textContent = data.roundEvent;
+        roundEventDisplay.classList.remove("hidden");
+        setTimeout(() => {
+          roundEventDisplay.classList.add("hidden");
+        }, 3000);
+      }
 
       if (data.gameState && data.gameState !== "PLAYING") {
         showGameOver(data.gameState, data.message || "");

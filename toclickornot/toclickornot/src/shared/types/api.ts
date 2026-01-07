@@ -35,6 +35,7 @@ export type ClickResponse = {
   newStats?: Stats;
   gameState?: GameState;
   message?: string;
+  roundEvent?: string;
 };
 
 export type RestartResponse = {

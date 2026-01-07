@@ -147,6 +147,26 @@ body {
   display: none;
 }
 
+.round-event {
+  text-align: center;
+  font-size: 13px;
+  padding: 8px;
+  background: rgba(255, 221, 0, 0.1);
+  border: 1px dashed #ffdd00;
+  color: #aaa;
+  font-style: italic;
+  animation: fadeIn 0.5s ease;
+}
+
+.round-event.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .click-progress {
   text-align: center;
   font-size: 14px;
