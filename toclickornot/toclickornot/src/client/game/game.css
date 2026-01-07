@@ -18,7 +18,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 16px;
+  padding: 12px;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a2e 100%);
 }
 
 .game-container {
@@ -26,7 +27,7 @@ body {
   max-width: 400px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .header {
@@ -38,40 +39,55 @@ body {
 
 .title {
   font-family: 'Press Start 2P', cursive;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 2px;
+  margin-bottom: 4px;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888;
   margin-bottom: 8px;
 }
 
 .turn-display {
-  font-size: 18px;
-  color: #888;
+  font-size: 16px;
+  color: #ffdd00;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 12px;
 }
 
 .stats-grid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .stat-bar {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
+  gap: 6px;
+  padding: 6px 8px;
   border: 1px solid #333;
   background: rgba(0, 0, 0, 0.5);
 }
 
-.stat-label {
-  width: 80px;
+.stat-icon {
   font-size: 14px;
+  width: 20px;
+  text-align: center;
+}
+
+.stat-label {
+  width: 70px;
+  font-size: 12px;
   color: #888;
 }
 
 .bar-container {
   flex: 1;
-  height: 12px;
+  height: 10px;
   background: #1a1a1a;
   border: 1px solid #333;
   overflow: hidden;
@@ -79,18 +95,27 @@ body {
 
 .bar-fill {
   height: 100%;
-  background: #00ff00;
+  background: linear-gradient(90deg, #00ff00 0%, #00cc00 100%);
   transition: width 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 5px #00ff00;
 }
 
 .bar-fill.critical {
-  background: #ff3333;
+  background: linear-gradient(90deg, #ff3333 0%, #cc0000 100%);
+  box-shadow: 0 0 5px #ff3333;
+  animation: pulse-critical 0.5s infinite;
+}
+
+@keyframes pulse-critical {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 .stat-value {
-  width: 30px;
+  width: 26px;
   text-align: right;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: bold;
 }
 
 .message-box {
@@ -105,31 +130,48 @@ body {
 }
 
 #situation-text {
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.4;
+}
+
+.stat-change-display {
+  text-align: center;
+  font-size: 12px;
+  padding: 6px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid #444;
+  color: #ffdd00;
+}
+
+.stat-change-display.hidden {
+  display: none;
 }
 
 .click-progress {
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   color: #888;
+  padding: 4px 0;
 }
 
 .survive-button {
   width: 100%;
-  padding: 20px;
+  padding: 16px;
   font-family: 'Press Start 2P', cursive;
-  font-size: 14px;
+  font-size: 12px;
   background: transparent;
   border: 3px solid #00ff00;
   color: #00ff00;
   cursor: pointer;
   transition: all 0.1s ease;
+  text-shadow: 0 0 5px #00ff00;
 }
 
 .survive-button:hover {
   background: #00ff00;
   color: #000;
+  text-shadow: none;
+  box-shadow: 0 0 20px #00ff00;
 }
 
 .survive-button:active {
@@ -167,23 +209,30 @@ body {
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.1); }
 }
 
 .game-over-title {
   font-family: 'Press Start 2P', cursive;
-  font-size: 20px;
+  font-size: 18px;
   color: #ff3333;
   text-align: center;
+  text-shadow: 0 0 10px #ff3333;
 }
 
 .game-over-title.victory {
   color: #ffdd00;
+  text-shadow: 0 0 10px #ffdd00;
+}
+
+.game-over-title.rushed {
+  color: #ff9900;
+  text-shadow: 0 0 10px #ff9900;
 }
 
 .game-over-message {
-  font-size: 18px;
+  font-size: 16px;
   color: #888;
   text-align: center;
   max-width: 300px;
@@ -191,9 +240,9 @@ body {
 
 .restart-button {
   margin-top: 16px;
-  padding: 16px 32px;
+  padding: 14px 28px;
   font-family: 'Press Start 2P', cursive;
-  font-size: 12px;
+  font-size: 10px;
   background: transparent;
   border: 2px solid #ff3333;
   color: #ff3333;
@@ -204,6 +253,7 @@ body {
 .restart-button:hover {
   background: #ff3333;
   color: #000;
+  box-shadow: 0 0 15px #ff3333;
 }
 
 .restart-button.victory {
@@ -214,14 +264,27 @@ body {
 .restart-button.victory:hover {
   background: #ffdd00;
   color: #000;
+  box-shadow: 0 0 15px #ffdd00;
+}
+
+.restart-button.rushed {
+  border-color: #ff9900;
+  color: #ff9900;
+}
+
+.restart-button.rushed:hover {
+  background: #ff9900;
+  color: #000;
+  box-shadow: 0 0 15px #ff9900;
 }
 
 .footer {
   display: flex;
   justify-content: center;
   gap: 12px;
-  font-size: 14px;
+  font-size: 12px;
   color: #444;
+  padding-top: 8px;
 }
 
 .divider {

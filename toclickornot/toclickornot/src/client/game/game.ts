@@ -19,6 +19,7 @@ const gameOverMessage = document.getElementById("game-over-message") as HTMLPara
 const restartButton = document.getElementById("restart-button") as HTMLButtonElement;
 const usernameDisplay = document.getElementById("username") as HTMLSpanElement;
 const totalPlaysDisplay = document.getElementById("total-plays") as HTMLSpanElement;
+const statChangeDisplay = document.getElementById("stat-change-display") as HTMLDivElement;
 
 const healthBar = document.getElementById("health-bar") as HTMLDivElement;
 const sanityBar = document.getElementById("sanity-bar") as HTMLDivElement;
@@ -31,6 +32,23 @@ const financialValue = document.getElementById("financial-value") as HTMLSpanEle
 
 let currentPostId: string | null = null;
 let currentGameState: GameState = "PLAYING";
+
+function formatStatChange(effects: Partial<Stats>): string {
+  const parts: string[] = [];
+  if (effects.health) {
+    parts.push(`HEALTH ${effects.health > 0 ? '+' : ''}${effects.health}`);
+  }
+  if (effects.sanity) {
+    parts.push(`SANITY ${effects.sanity > 0 ? '+' : ''}${effects.sanity}`);
+  }
+  if (effects.hope) {
+    parts.push(`HOPE ${effects.hope > 0 ? '+' : ''}${effects.hope}`);
+  }
+  if (effects.financial) {
+    parts.push(`FINANCIAL ${effects.financial > 0 ? '+' : ''}${effects.financial}`);
+  }
+  return parts.join(' | ');
+}
 
 function updateStats(stats: Stats) {
   healthBar.style.width = `${stats.health}%`;
@@ -56,8 +74,15 @@ function updateTurn(turn: number) {
 function updateSituation(situation: Situation | null) {
   if (situation) {
     situationText.textContent = situation.message;
+    if (statChangeDisplay) {
+      statChangeDisplay.textContent = formatStatChange(situation.effects);
+      statChangeDisplay.classList.remove("hidden");
+    }
   } else {
     situationText.textContent = "Loading...";
+    if (statChangeDisplay) {
+      statChangeDisplay.classList.add("hidden");
+    }
   }
 }
 
@@ -75,19 +100,25 @@ function showGameOver(state: GameState, message: string) {
     gameOverIcon.textContent = "🏆";
     gameOverTitle.textContent = "SURVIVAL COMPLETE";
     gameOverTitle.classList.add("victory");
+    gameOverTitle.classList.remove("rushed");
     restartButton.classList.add("victory");
+    restartButton.classList.remove("rushed");
     restartButton.textContent = "PLAY AGAIN";
   } else if (state === "RUSHED") {
     gameOverIcon.textContent = "⚡";
     gameOverTitle.textContent = "LIFE SKIPPED";
     gameOverTitle.classList.remove("victory");
+    gameOverTitle.classList.add("rushed");
     restartButton.classList.remove("victory");
+    restartButton.classList.add("rushed");
     restartButton.textContent = "DON'T RUSH THROUGH LIFE";
   } else {
     gameOverIcon.textContent = "💀";
     gameOverTitle.textContent = "SIMULATION FAILED";
     gameOverTitle.classList.remove("victory");
+    gameOverTitle.classList.remove("rushed");
     restartButton.classList.remove("victory");
+    restartButton.classList.remove("rushed");
     restartButton.textContent = "REBOOT LIFE.EXE";
   }
 }
@@ -145,6 +176,12 @@ async function handleClick() {
       if (data.gameState && data.gameState !== "PLAYING") {
         showGameOver(data.gameState, data.message || "");
       }
+    }
+
+    // Handle spam detection
+    if (data.gameState === "RUSHED") {
+      currentGameState = "RUSHED";
+      showGameOver("RUSHED", data.message || "You rushed through life too fast.");
     }
   } catch (error) {
     console.error("Click error:", error);

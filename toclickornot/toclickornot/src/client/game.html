@@ -7,18 +7,20 @@
       name="viewport"
       content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, height=device-height, user-scalable=0"
     />
-    <title>TO CLICK OR NOT</title>
+    <title>TO CLICK OR NOT | LIFE.EXE</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap" rel="stylesheet">
   </head>
   <body class="app">
     <div class="game-container">
       <header class="header">
-        <h1 class="title">TO CLICK OR NOT</h1>
+        <h1 class="title">LIFE.EXE</h1>
+        <div class="subtitle">TO CLICK OR NOT</div>
         <div class="turn-display" id="turn-display">ROUND 1/10</div>
       </header>
 
       <div class="stats-grid" id="stats-grid">
         <div class="stat-bar">
+          <span class="stat-icon">❤️</span>
           <span class="stat-label">HEALTH</span>
           <div class="bar-container">
             <div class="bar-fill" id="health-bar" style="width: 50%"></div>
@@ -26,6 +28,7 @@
           <span class="stat-value" id="health-value">50</span>
         </div>
         <div class="stat-bar">
+          <span class="stat-icon">🧠</span>
           <span class="stat-label">SANITY</span>
           <div class="bar-container">
             <div class="bar-fill" id="sanity-bar" style="width: 50%"></div>
@@ -33,6 +36,7 @@
           <span class="stat-value" id="sanity-value">50</span>
         </div>
         <div class="stat-bar">
+          <span class="stat-icon">✨</span>
           <span class="stat-label">HOPE</span>
           <div class="bar-container">
             <div class="bar-fill" id="hope-bar" style="width: 50%"></div>
@@ -40,6 +44,7 @@
           <span class="stat-value" id="hope-value">50</span>
         </div>
         <div class="stat-bar">
+          <span class="stat-icon">💰</span>
           <span class="stat-label">FINANCIAL</span>
           <div class="bar-container">
             <div class="bar-fill" id="financial-bar" style="width: 50%"></div>
@@ -49,8 +54,10 @@
       </div>
 
       <div class="message-box" id="message-box">
-        <p id="situation-text">Loading...</p>
+        <p id="situation-text">Initializing LIFE.EXE...</p>
       </div>
+
+      <div class="stat-change-display hidden" id="stat-change-display"></div>
 
       <div class="click-progress" id="click-progress">
         <span>CLICKS: </span>
