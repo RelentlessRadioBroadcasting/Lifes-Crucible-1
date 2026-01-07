@@ -50,7 +50,7 @@ function updateStats(stats: Stats) {
 }
 
 function updateTurn(turn: number) {
-  turnDisplay.textContent = `ROUND ${turn}/10`;
+  turnDisplay.textContent = `ROUND ${Math.min(turn, 10)}/10`;
 }
 
 function updateSituation(situation: Situation | null) {
