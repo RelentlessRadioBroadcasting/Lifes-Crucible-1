@@ -1,5 +1,10 @@
 import { navigateTo, context, requestExpandedMode } from "@devvit/web/client";
 
+// Set background image
+document.body.style.backgroundImage = "url('/background.png')";
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center";
+
 const docsLink = document.getElementById("docs-link") as HTMLDivElement;
 const playtestLink = document.getElementById("playtest-link") as HTMLDivElement;
 const discordLink = document.getElementById("discord-link") as HTMLDivElement;
